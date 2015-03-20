@@ -63,6 +63,7 @@ public class BasicDetailsFragment extends Fragment {
 				 else if (v.getId() == R.id.cancel) {
 					 Log.d("mytag", "am apasat cancel");
 					 getActivity().setResult(Activity.RESULT_CANCELED, new Intent());
+					 getActivity().finish();
 				 }	
 			 }
 		}

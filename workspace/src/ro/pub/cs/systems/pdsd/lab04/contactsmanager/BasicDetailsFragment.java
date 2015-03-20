@@ -32,29 +32,21 @@ public class BasicDetailsFragment extends Fragment {
 	 @Override
 	 public void onActivityCreated(Bundle savedInstanceState){
 		 super.onActivityCreated(savedInstanceState);
+		 
 		 getActivity().findViewById(R.id.manageFragments).setOnClickListener(buttonListener);
 		 getActivity().findViewById(R.id.save).setOnClickListener(buttonListener);
 		 getActivity().findViewById(R.id.cancel).setOnClickListener(buttonListener);
 		 
-		 Log.d("mytag", "in onactivity");
-		 
 		 Intent intent = getActivity().getIntent();
-		 //Intent intent = new Intent("ro.pub.cs.systems.pdsd.lab04.contactsmanager.intent.action.ContactsManagerActivity");
-		 Log.d("mytag", "after intent");
 		 if (intent != null) {
-			 
 			  String phone = intent.getStringExtra("ro.pub.cs.systems.pdsd.lab04.contactsmanager.PHONE_NUMBER_KEY");
-			  Log.d("phone", phone);
 			  if (phone != null) {
 				  ((EditText)getActivity().findViewById(R.id.phone)).setText(phone);
 			  } else {
-				  Log.d("mytag", "in elseeeeeeee");
 			    Activity activity = getActivity();
 			    Toast.makeText(activity, activity.getResources().getString(R.string.phone_error), Toast.LENGTH_LONG).show();
 			  }
 			} 
-		 
-		
 	 }
 	 
 	 protected class MyButtonListener implements View.OnClickListener {
@@ -149,7 +141,6 @@ public class BasicDetailsFragment extends Fragment {
 			}
 			
 			getActivity().startActivityForResult(intent, CONTACTS_MANAGER_REQUEST_CODE);
-			
 		}
 	}
 }

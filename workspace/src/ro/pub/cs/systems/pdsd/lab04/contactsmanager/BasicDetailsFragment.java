@@ -2,6 +2,7 @@ package ro.pub.cs.systems.pdsd.lab04.contactsmanager;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -15,23 +16,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class BasicDetailsFragment extends Fragment {
 	
 	protected MyButtonListener buttonListener = new MyButtonListener();
+	static final int CONTACTS_MANAGER_REQUEST_CODE = 99;
 	
 	 @Override
 	  public View onCreateView(LayoutInflater layoutInflater, ViewGroup container, Bundle state) {
+		 Log.d("mytag", "in onCreateView");
 	    return layoutInflater.inflate(R.layout.fragment_basic_details, container, false);
 	  }
 	 
 	 @Override
 	 public void onActivityCreated(Bundle savedInstanceState){
+		 super.onActivityCreated(savedInstanceState);
 		 getActivity().findViewById(R.id.manageFragments).setOnClickListener(buttonListener);
 		 getActivity().findViewById(R.id.save).setOnClickListener(buttonListener);
 		 getActivity().findViewById(R.id.cancel).setOnClickListener(buttonListener);
 		 
-		 super.onActivityCreated(savedInstanceState);
+		 Log.d("mytag", "in onactivity");
+		 
+		 Intent intent = getActivity().getIntent();
+		 //Intent intent = new Intent("ro.pub.cs.systems.pdsd.lab04.contactsmanager.intent.action.ContactsManagerActivity");
+		 Log.d("mytag", "after intent");
+		 if (intent != null) {
+			 
+			  String phone = intent.getStringExtra("ro.pub.cs.systems.pdsd.lab04.contactsmanager.PHONE_NUMBER_KEY");
+			  Log.d("phone", phone);
+			  if (phone != null) {
+				  ((EditText)getActivity().findViewById(R.id.phone)).setText(phone);
+			  } else {
+				  Log.d("mytag", "in elseeeeeeee");
+			    Activity activity = getActivity();
+			    Toast.makeText(activity, activity.getResources().getString(R.string.phone_error), Toast.LENGTH_LONG).show();
+			  }
+			} 
+		 
+		
 	 }
 	 
 	 protected class MyButtonListener implements View.OnClickListener {
@@ -42,12 +65,13 @@ public class BasicDetailsFragment extends Fragment {
 					 manageFragments(v);
 				 }
 				 else if (v.getId() == R.id.save) {
+					 Log.d("mytag", "am apasat save");
 					 saveContact(v);
 				 }
 				 else if (v.getId() == R.id.cancel) {
-					 getActivity().finish();
-				 }
-						
+					 Log.d("mytag", "am apasat cancel");
+					 getActivity().setResult(Activity.RESULT_CANCELED, new Intent());
+				 }	
 			 }
 		}
 
@@ -64,8 +88,7 @@ public class BasicDetailsFragment extends Fragment {
 			  ((Button)v).setText(getActivity().getResources().getString(R.string.showAdditional));
 			  fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_EXIT_MASK);
 			}
-			fragmentTransaction.commit();
-			
+			fragmentTransaction.commit();	
 		}
 		
 		private void saveContact(View v) {
@@ -125,7 +148,7 @@ public class BasicDetailsFragment extends Fragment {
 				intent.putParcelableArrayListExtra(ContactsContract.Intents.Insert.DATA, contactData);
 			}
 			
-			getActivity().startActivity(intent);
+			getActivity().startActivityForResult(intent, CONTACTS_MANAGER_REQUEST_CODE);
 			
 		}
 	}

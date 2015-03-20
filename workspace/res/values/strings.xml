@@ -15,4 +15,5 @@
 	<string name="companyLabel">Company</string>
 	<string name="websiteLabel">Website</string>
 	<string name="imLabel">IM</string>
+	<string name="phone_error">Phone Number Error</string>
 </resources>
